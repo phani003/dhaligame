@@ -78,7 +78,7 @@
 
             const imgname = ballimg.split("/");
 
-            let imageidandname = id + "," + imgname[4];
+            let imageidandname = id + "," + imgname[6];
 
             $("#hdnimagename").val(imageidandname);
 
@@ -86,7 +86,7 @@
 
             for (a = 0; a < imagesids.length; a++) {
                 let allimg = document.getElementById(imagesids[a]).src;
-                let whiteimge = allimg.split("/")[4];
+                let whiteimge = allimg.split("/")[6];
                 if (whiteimge == "white.png") {
                     $("#" + imagesids[a]).removeAttr("onclick", "onclick");
                     $("#" + imagesids[a]).attr("onclick", "playerchange(this.id)");
@@ -176,7 +176,7 @@
                     ///remove onclick event
                     for (k = 0; k < imagesids.length; k++) {
                         let allimg = document.getElementById(imagesids[k]).src;
-                        let whiteimge = allimg.split("/")[4];
+                        let whiteimge = allimg.split("/")[6];
                         if (whiteimge == "white.png" || whiteimge == "red.png" || whiteimge == "yellow.png") {
                             $("#" + imagesids[k]).removeAttr("onclick", "playerchange(this.id)");
                         }
@@ -184,7 +184,7 @@
 
                     for (a = 0; a < imagesids.length; a++) {
                         let allimg = document.getElementById(imagesids[a]).src;
-                        let whiteimge = allimg.split("/")[4];
+                        let whiteimge = allimg.split("/")[6];
                         if (whiteimge == "white.png") {
                             $("#" + imagesids[a]).removeAttr("onclick", "onclick");
                             /*$("#" + imagesids[a]).attr("onclick", "playerchange(this.id)");*/
@@ -276,7 +276,7 @@
 
             for (a = 0; a < imagesids.length; a++) {
                 let allimg = document.getElementById(imagesids[a]).src;
-                let whiteimge = allimg.split("/")[4];
+                let whiteimge = allimg.split("/")[6];
                 if (whiteimge == "white.png") {
 
                     $("#" + imagesids[a]).removeAttr("onclick", "onclick");
@@ -307,7 +307,7 @@
 
             let imagedata = document.getElementById(id).src;
             let imageid = id;
-            let imagename = imagedata.split("/")[4];
+            let imagename = imagedata.split("/")[6];
 
             let playername = $("#hdnmovedata").val();
             for (o = 0; o < imagesids.length; o++) {
