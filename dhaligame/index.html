@@ -231,7 +231,7 @@
                     ///remove onclick event
                     for (k = 0; k < imagesids.length; k++) {
                         let allimg = document.getElementById(imagesids[k]).src;
-                        let whiteimge = allimg.split("/")[4];
+                        let whiteimge = allimg.split("/")[6];
                         if (whiteimge == "white.png" || whiteimge == "red.png" || whiteimge == "yellow.png") {
                             $("#" + imagesids[k]).removeAttr("onclick", "playerchange(this.id)");
                         }
@@ -239,7 +239,7 @@
 
                     for (a = 0; a < imagesids.length; a++) {
                         let allimg = document.getElementById(imagesids[a]).src;
-                        let whiteimge = allimg.split("/")[4];
+                        let whiteimge = allimg.split("/")[6];
                         if (whiteimge == "white.png") {
 
                             $("#" + imagesids[a]).removeAttr("onclick", "onclick");
@@ -493,7 +493,7 @@
 
                 let payerid = $("#hdnplayers").val();
 
-                //let img1 = document.getElementById("1").src.split("/")[4];
+                //let img1 = document.getElementById("1").src.split("/")[6];
 
                 //if (img1 == "red.png" || img1 == "yellow.png") {
                 //    const id1move = ids[0].split(",");
