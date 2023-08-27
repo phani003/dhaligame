@@ -12,6 +12,9 @@
 
     </script>
     <script type="text/javascript" >
+
+
+
         function playerschange(id) {
             let payerid = id;
 
@@ -74,19 +77,22 @@
 
             let selectballid = id;
 
-            let ballimg = document.getElementById(selectballid).src;
+            /*let ballimg = document.getElementById(selectballid).src;*/
+            let ballimg = $("#" + id).attr("src");
 
             const imgname = ballimg.split("/");
 
-            let imageidandname = id + "," + imgname[6];
+            let imageidandname = id + "," + imgname[1];
 
             $("#hdnimagename").val(imageidandname);
 
             $("#" + id).css("background-color", "white");
 
             for (a = 0; a < imagesids.length; a++) {
-                let allimg = document.getElementById(imagesids[a]).src;
-                let whiteimge = allimg.split("/")[6];
+                /*let allimg = document.getElementById(imagesids[a]).src;*/
+                let allimg = $("#" + imagesids[a]).attr("src");
+
+                let whiteimge = allimg.split("/")[1];
                 if (whiteimge == "white.png") {
                     $("#" + imagesids[a]).removeAttr("onclick", "onclick");
                     $("#" + imagesids[a]).attr("onclick", "playerchange(this.id)");
@@ -149,9 +155,11 @@
             const imagedata = $("#hdnimagename").val().split(",");
             let imageid = imagedata[0];
             let imagename = imagedata[1];
-            let whiteimage = document.getElementById(id).src;
+            /*let whiteimage = document.getElementById(id).src;*/
+
+            let whiteimage = $("#" + id).attr("src");
             const whiteimagedata = whiteimage.split("/");
-            let whiteimagename = whiteimagedata[6];
+            let whiteimagename = whiteimagedata[1];
 
 
             if (imagedata != "") {
@@ -175,16 +183,20 @@
                     $("#hdnmovedata").val("player2");
                     ///remove onclick event
                     for (k = 0; k < imagesids.length; k++) {
-                        let allimg = document.getElementById(imagesids[k]).src;
-                        let whiteimge = allimg.split("/")[6];
+                        /*let allimg = document.getElementById(imagesids[k]).src;*/
+
+                        let allimg = $("#" + imagesids[k]).attr("src");
+
+                        let whiteimge = allimg.split("/")[1];
                         if (whiteimge == "white.png" || whiteimge == "red.png" || whiteimge == "yellow.png") {
                             $("#" + imagesids[k]).removeAttr("onclick", "playerchange(this.id)");
                         }
                     }
 
                     for (a = 0; a < imagesids.length; a++) {
-                        let allimg = document.getElementById(imagesids[a]).src;
-                        let whiteimge = allimg.split("/")[6];
+                        /*let allimg = document.getElementById(imagesids[a]).src;*/
+                        let allimg = $("#" + imagesids[a]).attr("src");
+                        let whiteimge = allimg.split("/")[1];
                         if (whiteimge == "white.png") {
                             $("#" + imagesids[a]).removeAttr("onclick", "onclick");
                             /*$("#" + imagesids[a]).attr("onclick", "playerchange(this.id)");*/
@@ -207,10 +219,11 @@
                         }
                     }
 
+                    movedatachange('red.png', id);
 
 
-
-                } else if ((payerid == "player2") && (whiteimagename == "white.png") && (imagedata != "")) {
+                }
+                else if ((payerid == "player2") && (whiteimagename == "white.png") && (imagedata != "")) {
 
                     $("#player1,#player2").css("background-color", "aqua");
                     $("#player1,#player2").css("color", "black");
@@ -230,16 +243,20 @@
 
                     ///remove onclick event
                     for (k = 0; k < imagesids.length; k++) {
-                        let allimg = document.getElementById(imagesids[k]).src;
-                        let whiteimge = allimg.split("/")[6];
+                        /*let allimg = document.getElementById(imagesids[k]).src;*/
+                        let allimg = $("#" + imagesids[k]).attr("src");
+                        let whiteimge = allimg.split("/")[1];
                         if (whiteimge == "white.png" || whiteimge == "red.png" || whiteimge == "yellow.png") {
                             $("#" + imagesids[k]).removeAttr("onclick", "playerchange(this.id)");
                         }
                     }
 
                     for (a = 0; a < imagesids.length; a++) {
-                        let allimg = document.getElementById(imagesids[a]).src;
-                        let whiteimge = allimg.split("/")[6];
+                        /*let allimg = document.getElementById(imagesids[a]).src;*/
+
+                        let allimg = $("#" + imagesids[a]).attr("src");
+
+                        let whiteimge = allimg.split("/")[1];
                         if (whiteimge == "white.png") {
 
                             $("#" + imagesids[a]).removeAttr("onclick", "onclick");
@@ -263,20 +280,31 @@
 
                         }
                     }
+
+                    movedatachange('yellow.png', id);
+
+
                 }
+                else {
 
-            } else {
-
-                document.getElementById(id).src = "images/" + whiteimagename;
+                    document.getElementById(id).src = "images/" + whiteimagename;
+                }
             }
-
+            imageschecking();
         }
 
-        function movedatachange() {
+        /// after dadi removing coins 
+
+        function imagechange(id) {
+
+            document.getElementById(id).src = "images/white.png";
 
             for (a = 0; a < imagesids.length; a++) {
-                let allimg = document.getElementById(imagesids[a]).src;
-                let whiteimge = allimg.split("/")[6];
+                $("#" + imagesids[a]).css("background-color", "blue");
+                /*let allimg = document.getElementById(imagesids[a]).src;*/
+                let allimg = $("#" + imagesids[a]).attr("src");
+
+                let whiteimge = allimg.split("/")[1];
                 if (whiteimge == "white.png") {
 
                     $("#" + imagesids[a]).removeAttr("onclick", "onclick");
@@ -300,14 +328,196 @@
 
                 }
             }
+
+        }
+
+
+
+        function movedatachange(imagecolor, whiteid) {
+
+
+            let dadidata = dadicombinations(whiteid);
+            let datasplit = dadidata.split("|");
+            let daadi = "";
+            for (u = 0; u < datasplit.length; u++) {
+                let dadis = datasplit[u].split(",");
+                da1 = $("#" + dadis[0]).attr("src").split("/")[1];
+                da2 = $("#" + dadis[1]).attr("src").split("/")[1];
+                da3 = $("#" + dadis[2]).attr("src").split("/")[1];
+                if (da1 == "red.png" && da2 == "red.png" && da3 == "red.png") {
+                    daadi = "true";
+                    $("#" + dadis[0]).css("background-color", "red");
+                    $("#" + dadis[1]).css("background-color", "red");
+                    $("#" + dadis[2]).css("background-color", "red");
+                } else if (da1 == "yellow.png" && da2 == "yellow.png" && da3 == "yellow.png") {
+
+                    daadi = "true";
+                    $("#" + dadis[0]).css("background-color", "red");
+                    $("#" + dadis[1]).css("background-color", "red");
+                    $("#" + dadis[2]).css("background-color", "red");
+                } else {
+
+                }
+            }
+
+
+            if (daadi == "true") {
+
+                if (imagecolor == "red.png") {
+
+                    for (w = 0; w < imagesids.length; w++) {
+                        $("#" + imagesids[w]).removeAttr("onclick", "onclick");
+                        let image = $("#" + imagesids[w]).attr("src").split("/")[1];
+                        if (image == "yellow.png") {
+
+                            let yellimagecom = dadicombinations(imagesids[w]).split("|");
+
+                            let datasplity = yellimagecom[0].split(",");
+                            da11 = $("#" + datasplity[0]).attr("src").split("/")[1];
+                            da22 = $("#" + datasplity[1]).attr("src").split("/")[1];
+                            da33 = $("#" + datasplity[2]).attr("src").split("/")[1];
+
+                            let datasplity1 = yellimagecom[1].split(",");
+                            da41 = $("#" + datasplity1[0]).attr("src").split("/")[1];
+                            da52 = $("#" + datasplity1[1]).attr("src").split("/")[1];
+                            da63 = $("#" + datasplity1[2]).attr("src").split("/")[1];
+                            let onecom = "";
+                            let twocom = "";
+
+                            if (da11 == "yellow.png" && da22 == "yellow.png" && da33 == "yellow.png") {
+
+                                onecom = "true";
+                                /*$("#" + imagesids[w]).removeAttr("onclick", "onclick");*/
+                            } else {
+                                onecom = "false";
+                                /*$("#" + imagesids[w]).attr("onclick", "imagechange(this.id)");*/
+                            }
+                            if (da41 == "yellow.png" && da52 == "yellow.png" && da63 == "yellow.png") {
+
+                                twocom = "true";
+                            } else {
+
+                                twocom = "false";
+                            }
+
+                            if ((onecom == "true" && twocom == "true") || (onecom == "true" && twocom == "false") || (onecom == "false" && twocom == "true")) {
+                                $("#" + imagesids[w]).removeAttr("onclick", "onclick");
+                            } else {
+                                $("#" + imagesids[w]).attr("onclick", "imagechange(this.id)");
+                            }
+
+                        }
+
+                    }
+
+
+                } else if (imagecolor == "yellow.png") {
+
+                    for (w = 0; w < imagesids.length; w++) {
+                        $("#" + imagesids[w]).removeAttr("onclick", "onclick");
+                        let image = $("#" + imagesids[w]).attr("src").split("/")[1];
+                        if (image == "red.png") {
+
+                            let yellimagecom = dadicombinations(imagesids[w]).split("|");
+
+                            let datasplity = yellimagecom[0].split(",");
+                            da11 = $("#" + datasplity[0]).attr("src").split("/")[1];
+                            da22 = $("#" + datasplity[1]).attr("src").split("/")[1];
+                            da33 = $("#" + datasplity[2]).attr("src").split("/")[1];
+
+                            let datasplity1 = yellimagecom[1].split(",");
+                            da41 = $("#" + datasplity1[0]).attr("src").split("/")[1];
+                            da52 = $("#" + datasplity1[1]).attr("src").split("/")[1];
+                            da63 = $("#" + datasplity1[2]).attr("src").split("/")[1];
+                            let onecom = "";
+                            let twocom = "";
+
+                            if (da11 == "red.png" && da22 == "red.png" && da33 == "red.png") {
+
+                                onecom = "true";
+                                /*$("#" + imagesids[w]).removeAttr("onclick", "onclick");*/
+                            } else {
+                                onecom = "false";
+                                /*$("#" + imagesids[w]).attr("onclick", "imagechange(this.id)");*/
+                            }
+                            if (da41 == "red.png" && da52 == "red.png" && da63 == "red.png") {
+
+                                twocom = "true";
+                            } else {
+
+                                twocom = "false";
+                            }
+
+                            if ((onecom == "true" && twocom == "true") || (onecom == "true" && twocom == "false") || (onecom == "false" && twocom == "true")) {
+                                $("#" + imagesids[w]).removeAttr("onclick", "onclick");
+                            } else {
+                                $("#" + imagesids[w]).attr("onclick", "imagechange(this.id)");
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+
+            } else {
+
+
+
+
+                for (a = 0; a < imagesids.length; a++) {
+                    /*let allimg = document.getElementById(imagesids[a]).src;*/
+                    let allimg = $("#" + imagesids[a]).attr("src");
+                    let whiteimge = allimg.split("/")[1];
+                    if (whiteimge == "white.png") {
+
+                        $("#" + imagesids[a]).removeAttr("onclick", "onclick");
+
+                        /*$("#" + imagesids[a]).attr("onclick", "playerchange(this.id)");*/
+                    } else {
+                        let playername = $("#hdnmovedata").val();
+
+                        $("#" + imagesids[a]).removeAttr("onclick", "onclick");
+
+                        if (playername == "player1" && whiteimge == "red.png") {
+
+                            $("#" + imagesids[a]).attr("onclick", "datamoving(this.id)");
+
+                        } else if (playername == "player2" && whiteimge == "yellow.png") {
+
+                            $("#" + imagesids[a]).attr("onclick", "datamoving(this.id)");
+
+                        }
+
+
+                    }
+                }
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
         }
 
 
         function datamoving(id) {
 
-            let imagedata = document.getElementById(id).src;
+            /*let imagedata = document.getElementById(id).src;*/
+            let imagedata = $("#" + id).attr("src");
             let imageid = id;
-            let imagename = imagedata.split("/")[6];
+            let imagename = imagedata.split("/")[1];
 
             let playername = $("#hdnmovedata").val();
             for (o = 0; o < imagesids.length; o++) {
@@ -420,7 +630,7 @@
                     $("#hdnimageids").val("");
                     $("#hdnstorids").val("");
                     $("#hdntrueorfalls").val("");
-                    movedatachange();
+                    movedatachange('red.png', id);
 
                 }
             } else if ((playername == "player2") && (imagename == "white.png") && ($("#hdnmovedatatonearplace").val() != "") && ($("#hdntrueorfalls").val() == "true")) {
@@ -453,13 +663,13 @@
                     $("#hdnimageids").val("");
                     $("#hdnstorids").val("");
                     $("#hdntrueorfalls").val("");
-                    movedatachange();
+                    movedatachange('yellow.png', id);
 
                 }
 
             }
 
-
+            imageschecking();
             $("#hdnimageids").val("");
 
         }
@@ -484,6 +694,88 @@
             return ids[id - 1];
         }
 
+
+
+        function imageschecking() {
+
+            let noofrimg = "";
+            let noofyimg = "";
+
+            let redimg = 0;
+            let yelimg = 0;
+
+
+
+            for (r = 0; r < imagesids.length; r++) {
+
+                if ($("#" + imagesids[r]).attr("src").split("/")[1] == "red.png") {
+                    let noredimg = redimg + 1;
+                    redimg = noredimg;
+                } else {
+
+                    if ($("#" + imagesids[r]).attr("src").split("/")[1] == "yellow.png") {
+                        let noyelimg = yelimg + 1;
+                        yelimg = noyelimg;
+                    }
+
+                }
+            }
+
+            const rredimg = [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40];
+            const yyelimg = [50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60];
+
+            let rredimages = 0;
+            let yyelimages = 0;
+
+            for (rr = 0; rr < rredimg.length; rr++) {
+
+                let rimges = $("#" + rredimg[rr]).is(":hidden");
+                let yimges = $("#" + yyelimg[rr]).is(":hidden");
+
+                if (rimges == true) {
+
+                    let rrrr = rredimages + 1;
+                    rredimages = 11 - rrrr;
+
+                } else {
+
+                    if (yimges == true) {
+
+                        let yyyy = yyelimages + 1;
+                        yyelimages = 11 - yyyy;
+
+                    }
+                }
+
+            }
+
+            noofrimg = 11 - redimg - rredimages;
+            noofyimg = 11 - yelimg - yyelimages;
+
+            if (noofrimg <= 2 && $("#hdnmovedata").val() == "player1") {
+
+                $("#winner").show();
+                $("#winnerid").text("Player2 Winner");
+
+            } else {
+
+                if (noofyimg <= 2 && $("#hdnmovedata").val() == "player2") {
+                    $("#winner").show();
+                    $("#winnerid").text("Player1 Winner");
+                }
+
+            }
+
+
+        }
+
+        function dadicombinations(id) {
+            const ids = ["1,2,3|1,10,22", "1,2,3|2,5,8", "1,2,3|3,15,24", "4,5,6|4,11,19", "4,5,6|2,5,8", "4,5,6|6,14,21", "7,8,9|7,12,16", "7,8,9|2,5,8", "7,8,9|9,13,18", "10,11,12|1,10,22", "10,11,12|4,11,19", "10,11,12|7,12,16", "13,14,15|9,13,18", "13,14,15|6,14,21", "13,14,15|3,15,24", "16,17,18|7,12,16", "16,17,18|17,20,23", "16,17,18|18,13,9", "19,11,4|19,20,21", "17,20,23|19,20,21", "19,20,21|6,14,21", "22,23,24|1,10,22", "22,23,24|17,20,23", "22,23,24|3,15,24"];
+            return ids[id - 1];
+        }
+
+
+
         $(document).ready(function () {
 
             const ids = ["2,10", "1,3,5", "2,15", "5,11", "2,4,6,8", "5,14", "8,12", "5,7,9", "8,13", "1,11,22", "4,10,12,19", "7,11,16", "9,14,18", "6,13,15,21", "3,14,24", "12,17", "16,18,20", "13,17", "11,20", "17,19,21,23", "14,20", "10,23", "20,22,24", "15,23"];
@@ -493,7 +785,7 @@
 
                 let payerid = $("#hdnplayers").val();
 
-                //let img1 = document.getElementById("1").src.split("/")[6];
+                //let img1 = document.getElementById("1").src.split("/")[4];
 
                 //if (img1 == "red.png" || img1 == "yellow.png") {
                 //    const id1move = ids[0].split(",");
@@ -599,6 +891,9 @@
 
 
 
+
+
+
     </script>
     <script type="text/javascript">
 
@@ -622,74 +917,74 @@
 <body>
     <!--<%--/// line 1--%>-->
     <div class="row" style="height:40px;background-color:aqua">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     1
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
 
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
             </div>
@@ -697,156 +992,156 @@
     </div>
     <!--<%--/// line 2--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="1" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
 
                 </div>
-                <div class="col-lg-2"></div>
-                <div class="col-lg-2"></div>
-                <div class="col-lg-2"></div>
-                <div class="col-lg-2"></div>
-                <div class="col-lg-2"></div>
+                <div class="col-sm-2  col-lg-2"></div>
+                <div class="col-sm-2  col-lg-2"></div>
+                <div class="col-sm-2  col-lg-2"></div>
+                <div class="col-sm-2  col-lg-2"></div>
+                <div class="col-sm-2  col-lg-2"></div>
 
 
             </div>
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="2" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                 </div>
             </div>
 
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="3" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <!--<asp:Label ID="player1" runat="server" Text="Player1"></asp:Label>-->
                     <label id="player1">Player1</label>
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
                 </div>
             </div>
         </div>
     </div>
     <!--<%--/// line 3--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     3
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
                     <div id="70">
                         <img id="30" onclick="selectball(this.id)" src="images/red.png" />
                         <img id="31" onclick="selectball(this.id)" src="images/red.png" />
 
                     </div>
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <div id="71">
                         <img id="32" onclick="selectball(this.id)" src="images/red.png" />
                         <img id="33" onclick="selectball(this.id)" src="images/red.png" />
                     </div>
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <div id="72">
                         <img id="34" onclick="selectball(this.id)" src="images/red.png" />
                         <img id="35" onclick="selectball(this.id)" src="images/red.png" />
                     </div>
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
                     <div id="73">
                         <img id="36" onclick="selectball(this.id)" src="images/red.png" />
                         <img id="37" onclick="selectball(this.id)" src="images/red.png" />
 
                     </div>
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <div id="74">
                         <img id="38" onclick="selectball(this.id)" src="images/red.png" />
@@ -860,76 +1155,76 @@
     </div>
     <!--<%--/// line 4--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     4
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                     <img id="4" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
                 </div>
             </div>
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="5" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                     <img id="6" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
                 </div>
             </div>
 
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <div id="75">
                         <img id="40" onclick="selectball(this.id)" src="images/red.png" />
 
                     </div>
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -937,76 +1232,76 @@
     </div>
     <!--<%--/// line 5--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     5
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <!--<asp:Label ID="player2" runat="server" Text="Player 2"></asp:Label>-->
                     <label id="player2">Player2</label>
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1014,67 +1309,67 @@
     </div>
     <!--<%--/// line 6--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     6
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" align="center" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" align="center" style="height:40px;background-color:blue">
 
                     <img id="7" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
             </div>
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="8" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                     <img id="9" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <div id="80">
                         <img id="50" onclick="selectball(this.id)" src="images/yellow.png" />
@@ -1082,7 +1377,7 @@
                     </div>
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <div id="81">
                         <img id="52" onclick="selectball(this.id)" src="images/yellow.png" />
@@ -1090,14 +1385,14 @@
                     </div>
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
                     <div id="82">
                         <img id="54" onclick="selectball(this.id)" src="images/yellow.png" />
                         <img id="55" onclick="selectball(this.id)" src="images/yellow.png" />
                     </div>
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <div id="83">
                         <img id="56" onclick="selectball(this.id)" src="images/yellow.png" />
@@ -1105,7 +1400,7 @@
                     </div>
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <div id="84">
                         <img id="58" onclick="selectball(this.id)" src="images/yellow.png" />
@@ -1118,61 +1413,61 @@
     </div>
     <!--<%--/// line 7--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     7
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                     <div id="85">
 
@@ -1180,16 +1475,16 @@
                     </div>
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1197,73 +1492,73 @@
     </div>
     <!--<%--/// line 8--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     8
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1271,73 +1566,73 @@
     </div>
     <!--<%--/// line 9--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     9
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1345,85 +1640,85 @@
     </div>
     <!--<%--/// line 10--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="10" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" align="center" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" align="center" style="height:40px;background-color:blue">
 
                     <img id="11" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                     <img id="12" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" align="middle" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" align="center" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" align="center" style="height:40px;background-color:blue">
 
                     <img id="13" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" align="center" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" align="center" style="height:40px;background-color:blue">
 
                     <img id="14" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
             </div>
 
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="15" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1431,73 +1726,73 @@
     </div>
     <!--<%--/// line 11--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     11
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1505,73 +1800,73 @@
     </div>
     <!--<%--/// line 12--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     12
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1579,73 +1874,73 @@
     </div>
     <!--<%--/// line 13--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     13
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1653,80 +1948,80 @@
     </div>
     <!--<%--/// line 14--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     14
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
 
                     <img id="16" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
             </div>
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="17" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" align="center" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" align="center" style="height:40px;background-color:blue">
 
                     <img id="18" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1734,73 +2029,73 @@
     </div>
     <!--<%--/// line 15--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     15
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1808,79 +2103,79 @@
     </div>
     <!--<%--/// line 16--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     16
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" align="center" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" align="center" style="height:40px;background-color:blue">
 
                     <img id="19" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
             </div>
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="20" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:blue">
 
                 </div>
-                <div class="col-lg-2" align="center" style="height:40px;background-color:blue">
+                <div class="col-sm-2  col-lg-2" align="center" style="height:40px;background-color:blue">
 
                     <img id="21" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1888,73 +2183,73 @@
     </div>
     <!--<%--/// line 17--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     17
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
-
-                </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
+
+                </div>
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -1962,80 +2257,80 @@
     </div>
     <!--<%--/// line 18--%>-->
     <div class="row" style="height:40px;background-color:blue">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="22" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
             </div>
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="23" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
             </div>
 
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
             <div class="row">
-                <div class="col-lg-2" align="center">
+                <div class="col-sm-2  col-lg-2" align="center">
 
                     <img id="24" onclick="playerchange(this.id);datamoving(this.id)" style="margin:10px" src="images/white.png" />
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
-                <div class="col-lg-2" style="height:40px;background-color:aqua">
+                <div class="col-sm-2  col-lg-2" style="height:40px;background-color:aqua">
 
                 </div>
             </div>
@@ -2043,73 +2338,73 @@
     </div>
     <!--<%--/// line 19--%>-->
     <div class="row" style="height:40px;background-color:aqua">
-        <div class="col-lg-4">
+        <div class="col-sm-4  col-lg-4">
 
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
                     19
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row">
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
             </div>
 
         </div>
+        <div class="col-sm-4  col-lg-4">
 
-        <div class="col-lg-4">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4  col-lg-4">
+            <div class="row">
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
+
+                </div>
+                <div class="col-sm-2  col-lg-2">
 
                 </div>
             </div>
@@ -2701,7 +2996,7 @@
                 padding-left: 0
             }
 
-        .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
+        .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-sm-2  col-lg-2, .col-lg-3, .col-sm-4  col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
             position: relative;
             width: 100%;
             min-height: 1px;
@@ -3451,7 +3746,7 @@
                 max-width: 8.333333%
             }
 
-            .col-lg-2 {
+            .col-sm-2  col-lg-2 {
                 -webkit-box-flex: 0;
                 -ms-flex: 0 0 16.666667%;
                 flex: 0 0 16.666667%;
@@ -3465,7 +3760,7 @@
                 max-width: 25%
             }
 
-            .col-lg-4 {
+            .col-sm-4  col-lg-4 {
                 -webkit-box-flex: 0;
                 -ms-flex: 0 0 33.333333%;
                 flex: 0 0 33.333333%;
