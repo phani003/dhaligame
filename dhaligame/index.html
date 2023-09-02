@@ -27,6 +27,7 @@
 
         var storechanse = "";
         var playeron = $("#hdnplayers").val();
+        var chansemove = "false";
 
         $(document).ready(function () {
 
@@ -237,7 +238,7 @@
                 $("#player2").css("background-color", "white");
                 $("#player2").css("color", "red");
             }
-
+            chansemove = "false";
         }
 
         ///leftside game chart and selected ball put on specific place 
@@ -441,6 +442,7 @@
                 da3 = $("#" + dadis[2]).attr("src").split("/")[1];
                 if (da1 == "red.png" && da2 == "red.png" && da3 == "red.png") {
                     daadi = "true";
+                    chansemove = "true";
                     $("#" + dadis[0]).css("background-color", "red");
                     $("#" + dadis[1]).css("background-color", "red");
                     $("#" + dadis[2]).css("background-color", "red");
@@ -448,6 +450,7 @@
                 } else if (da1 == "yellow.png" && da2 == "yellow.png" && da3 == "yellow.png") {
 
                     daadi = "true";
+                    chansemove = "true";
                     $("#" + dadis[0]).css("background-color", "red");
                     $("#" + dadis[1]).css("background-color", "red");
                     $("#" + dadis[2]).css("background-color", "red");
@@ -936,31 +939,36 @@
         //chance moving  one palyer to another player
         function chancemove() {
 
-            let payerid = $("#hdnplayers").val();
-            $("#hdnmovedata").val("");
-            if (payerid == "player1") {
-                payerid = "player1";
-                disableimages(payerid);
-                $("#hdnmovedata").val("player2");
+            if (chansemove == "true") {
+
+                alert("dhali cannot change player");
             } else {
-                payerid = "player2";
-                disableimages(payerid);
-                $("#hdnmovedata").val("player1");
-            }
-            for (cc = 0; cc < imagesids.length; cc++) {
-                $("#" + imagesids[cc]).removeAttr("onclick", "onclick");
-            }
-            for (ccc = 0; ccc < imagesids.length; ccc++) {
 
-                let imagepng = $("#" + imagesids[ccc]).attr("src").split("/")[1];
-                if (payerid == "player2" && imagepng == "red.png") {
-                    $("#" + imagesids[ccc]).attr("onclick", "datamoving(this.id)");
-                } else if (payerid == "player1" && imagepng == "yellow.png") {
-                    $("#" + imagesids[ccc]).attr("onclick", "datamoving(this.id)");
+                let payerid = $("#hdnplayers").val();
+                $("#hdnmovedata").val("");
+                if (payerid == "player1") {
+                    payerid = "player1";
+                    disableimages(payerid);
+                    $("#hdnmovedata").val("player2");
+                } else {
+                    payerid = "player2";
+                    disableimages(payerid);
+                    $("#hdnmovedata").val("player1");
                 }
+                for (cc = 0; cc < imagesids.length; cc++) {
+                    $("#" + imagesids[cc]).removeAttr("onclick", "onclick");
+                }
+                for (ccc = 0; ccc < imagesids.length; ccc++) {
+
+                    let imagepng = $("#" + imagesids[ccc]).attr("src").split("/")[1];
+                    if (payerid == "player2" && imagepng == "red.png") {
+                        $("#" + imagesids[ccc]).attr("onclick", "datamoving(this.id)");
+                    } else if (payerid == "player1" && imagepng == "yellow.png") {
+                        $("#" + imagesids[ccc]).attr("onclick", "datamoving(this.id)");
+                    }
+                }
+
             }
-
-
         }
 
 
@@ -1072,20 +1080,7 @@
             });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         });
-
 
 
     </script>
